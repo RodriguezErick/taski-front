@@ -20,3 +20,10 @@
         font-family: var(--font-taski-body);
     }
 }
+
+@layer components {
+  .disable-style {
+    @apply cursor-not-allowed border-taski-placeholder text-taski-placeholder scale-100 shadow-none;
+  }
+
+}
