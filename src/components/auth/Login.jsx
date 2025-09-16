@@ -54,7 +54,7 @@ function Login() {
         <h1 className="text-taski-text-title font-bold p-4">
           Welcome to Taski!
         </h1>
-        <div className="w-2/5 mx-auto">
+        <div className="w-full max-w-3/4 mx-auto">
           <Input
             label="Email"
             name="email"
