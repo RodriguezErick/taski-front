@@ -4,6 +4,7 @@ const Input = ({
   label,
   name,
   type = "text",
+  variant = "",
   value,
   onChange,
   placeholder = "",
@@ -43,7 +44,7 @@ const Input = ({
         />
       </div>
 
-      {error && <p className="mt-1 text-sm text-taski-alert">{error}</p>}
+      {error && <p className={`mt-1 text-sm whitespace-pre-line text-left pl-4 ${variant === "change" ? "text-taski-warning" : "text-taski-alert"}`}>{error}</p>}
     </div>
   );
 };

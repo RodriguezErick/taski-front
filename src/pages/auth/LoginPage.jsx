@@ -1,8 +1,12 @@
 import Login from "../../components/auth/Login";
 import loginImage from "../../assets/login-image.png";
+import SignUp from "../../components/auth/SignUp";
+import { useState } from "react";
+import { CloseIcon } from "../../assets/icons";
 
 
 function LoginPage() {
+    const [showModal, setShowModal] = useState(false);
   return (
     <div className="relative min-h-screen w-full overflow-hidden">
       {/* Fondo con gradiente/máscara - solo se muestra en md+ */}
@@ -30,11 +34,24 @@ function LoginPage() {
         <div className="flex-1 flex items-center justify-center px-4">
           <div className="w-full max-w-lg">
             <Login />
-            <p className="text-taski-placeholder underline p-1 hover:cursor-pointer hover:text-taski-secondary text-center">
+            <p className="text-taski-placeholder underline p-1 hover:cursor-pointer hover:text-taski-secondary text-center" onClick={() => setShowModal(true)}>
               Sign Up
             </p>
           </div>
         </div>
+        {showModal && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50">
+          <div className="p-6 rounded-lg shadow-lg relative w-8/12">
+            <button
+              className="w-6 h-6 absolute top-2 right-2 text-taski-text hover:text-taski-alert hover:cursor-pointer rounded-full"
+              onClick={() => setShowModal(false)}
+            >
+              {CloseIcon}
+            </button>
+            <SignUp />
+          </div>
+        </div>
+      )}
 
         {/* Espacio vacío a la derecha, solo en md+ */}
         <div className="hidden md:flex flex-1"></div>
