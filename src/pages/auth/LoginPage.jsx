@@ -4,9 +4,8 @@ import SignUp from "../../components/auth/SignUp";
 import { useState } from "react";
 import { CloseIcon } from "../../assets/icons";
 
-
 function LoginPage() {
-    const [showModal, setShowModal] = useState(false);
+  const [showModal, setShowModal] = useState(false);
   return (
     <div className="relative min-h-screen w-full overflow-hidden">
       {/* Fondo con gradiente/máscara - solo se muestra en md+ */}
@@ -34,24 +33,30 @@ function LoginPage() {
         <div className="flex-1 flex items-center justify-center px-4">
           <div className="w-full max-w-lg">
             <Login />
-            <p className="text-taski-placeholder underline p-1 hover:cursor-pointer hover:text-taski-secondary text-center" onClick={() => setShowModal(true)}>
+            <p
+              className="text-taski-placeholder underline p-1 hover:cursor-pointer hover:text-taski-secondary text-center"
+              onClick={() => setShowModal(true)}
+            >
               Sign Up
             </p>
           </div>
         </div>
         {showModal && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50">
-          <div className="p-6 rounded-lg shadow-lg relative w-8/12">
-            <button
-              className="w-6 h-6 absolute top-2 right-2 text-taski-text hover:text-taski-alert hover:cursor-pointer rounded-full"
-              onClick={() => setShowModal(false)}
-            >
-              {CloseIcon}
-            </button>
-            <SignUp />
+          <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50 px-2">
+            <div className="p-4 rounded-3xl shadow-lg relative w-full sm:w-10/12 md:w-8/12 lg:w-6/12 max-h-[90vh] overflow-y-auto bg-taski-card">
+              {/* Botón de cerrar */}
+              <button
+                className="w-6 h-6 absolute top-2 right-2 text-taski-text hover:text-taski-alert hover:cursor-pointer rounded-full"
+                onClick={() => setShowModal(false)}
+              >
+                {CloseIcon}
+              </button>
+
+              {/* Contenido del modal */}
+              <SignUp />
+            </div>
           </div>
-        </div>
-      )}
+        )}
 
         {/* Espacio vacío a la derecha, solo en md+ */}
         <div className="hidden md:flex flex-1"></div>
@@ -59,7 +64,5 @@ function LoginPage() {
     </div>
   );
 }
-
-
 
 export default LoginPage;

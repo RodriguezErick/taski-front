@@ -11,6 +11,7 @@ const Input = ({
   error,
   className = "",
   icon = "",
+  disabled = false
 }) => {
   return (
     <div className={`mb-4 ${className}`}>
@@ -23,12 +24,12 @@ const Input = ({
         </label>
       )}
       <div
-        className={`flex items-center w-full rounded-md border-2 transition-all duration-300${
+        className={`flex items-center w-full rounded-md border-2 transition-all text-taski-text-title duration-300${
           error ? "border-taski-alert" : "border-taski-placeholder"
-        } focus-within:ring-1 focus-within:ring-taski-text`}
+        } ${disabled ? "disable-style" : ""} focus-within:ring-1 focus-within:ring-taski-text`}
       >
         {icon && (
-          <span className="px-3 py-2 bg-taski-card text-taski-text-title flex items-center rounded-md shadow">
+          <span className="px-3 py-2 bg-taski-card flex items-center rounded-md shadow">
             {icon}
           </span>
         )}
@@ -40,6 +41,7 @@ const Input = ({
           value={value}
           onChange={onChange}
           placeholder={placeholder}
+          disabled={disabled}
           className="flex-1 px-3 py-2 bg-taski-background text-taski-text placeholder-taski-placeholder focus:outline-none rounded-r-md"
         />
       </div>

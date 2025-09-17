@@ -19,8 +19,7 @@ export const validatePassword = (password) => {
 
 export const validateConfirmPassword = (password, confirmPassword) => {
   const errors = [];
-  
-  if (password !== confirmPassword && confirmPassword.length > 0){
+  if (password !== confirmPassword){
     errors.push("Las contraseñas ingresadas no coinciden.");
   }
   return errors;
