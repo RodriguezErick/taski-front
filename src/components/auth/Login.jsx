@@ -7,11 +7,13 @@ import {
 } from "../../utils/inputValidators";
 import { useLogin } from "../../hooks/auth/useLogin";
 import { useState, useEffect } from "react";
+import { useLanguage } from "../../hooks/common/useLanguage";
 
 function Login() {
   const [form, setForm] = useState({ email: "", password: "" });
   const [formErrors, setFormErrors] = useState({});
   const [submitted, setSubmitted] = useState(false);
+  const { text } = useLanguage();
 
   const { user, errors: loginErrors, loading, login } = useLogin();
 
@@ -22,9 +24,9 @@ function Login() {
 
   const validate = (form) => {
     const newErrors = {};
-    const emailErrors = validateEmail(form.email);
+    const emailErrors = validateEmail(form.email, text);
     if (emailErrors.length > 0) newErrors.email = emailErrors.join(", ");
-    const passwordErrors = validateLoginPassword(form.password);
+    const passwordErrors = validateLoginPassword(form.password, text);
     if (passwordErrors.length > 0)
       newErrors.password = passwordErrors.join(", ");
     return newErrors;
@@ -32,7 +34,7 @@ function Login() {
 
   useEffect(() => {
     setFormErrors(validate(form));
-  }, [form]);
+  }, [form, text]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -52,32 +54,32 @@ function Login() {
     <form onSubmit={handleSubmit}>
       <div className="bg-taski-card rounded-2xl p-4 shadow flex flex-col gap-2">
         <h1 className="text-taski-text-title font-bold p-4">
-          Welcome to Taski!
+          {text.welcome}
         </h1>
         <div className="w-full max-w-3/4 mx-auto">
           <Input
-            label="Email"
+            label={text.email}
             name="email"
             type="email"
             value={form.email}
             onChange={handleChange}
-            placeholder="email@example.com"
+            placeholder={text.emailPlaceholder}
             error={submitted ? formErrors.email : ""}
             icon={EmailIcon}
           />
           <Input
-            label="Password"
+            label={text.password}
             name="password"
             type="password"
             value={form.password}
             onChange={handleChange}
-            placeholder="********"
+            placeholder={text.passwordPlaceholder}
             error={submitted ? formErrors.password : ""}
             icon={PassIcon}
           />
 
           <Button
-            label={loading ? "Loging in..." : "Log In"}
+            label={loading ? text.logingIn : text.login}
             type="submit"
             icon={LoginIcon}
             disabled={Object.keys(formErrors).length > 0 || loading}

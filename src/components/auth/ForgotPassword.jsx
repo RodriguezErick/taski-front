@@ -6,6 +6,7 @@ import {
 } from "../../utils/inputValidators";
 import { useLogin } from "../../hooks/auth/useLogin";
 import { useState, useEffect } from "react";
+import { useLanguage } from "../../hooks/common/useLanguage";
 
 function ForgotPassword() {
   const [form, setForm] = useState({
@@ -16,6 +17,7 @@ function ForgotPassword() {
   const [success, setSuccess] = useState(false);
 
   const { user, errors: loginErrors, loading, login } = useLogin();
+  const { text } = useLanguage();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -24,14 +26,14 @@ function ForgotPassword() {
 
   const validate = (form) => {
     const newErrors = {};
-    const emailErrors = validateEmail(form.email);
+    const emailErrors = validateEmail(form.email, text);
     if (emailErrors.length > 0) newErrors.email = emailErrors.join(", ");
     return newErrors;
   };
 
   useEffect(() => {
     setFormErrors(validate(form));
-  }, [form]);
+  }, [form, text]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -55,17 +57,17 @@ function ForgotPassword() {
     <form onSubmit={handleSubmit} className="w-full flex justify-center px-4">
       <div className="bg-taski-card rounded-2xl p-6 flex flex-col gap-4 w-full sm:max-w-md">
         <h1 className="text-taski-text-title font-bold text-xl sm:text-2xl text-center">
-          Reset your password!
+          {text.resetPassword}
         </h1>
 
         <div className="flex flex-col gap-3">
           <Input
-            label="Email"
+            label={text.email}
             name="email"
             type="email"
             value={form.email}
             onChange={handleChange}
-            placeholder="example@email.com"
+            placeholder={text.emailPlaceholder}
             error={submitted ? formErrors.username : ""}
             icon={EmailIcon}
             disabled={success}
@@ -73,7 +75,7 @@ function ForgotPassword() {
         </div>
 
         <Button
-          label={loading ? "Submiting..." : "Submit"}
+          label={loading ? text.submitting : text.submit}
           type="submit"
           icon={LoginIcon}
           disabled={
@@ -85,13 +87,12 @@ function ForgotPassword() {
 
         {success && (
           <div>
-            <p className="text-taski-secondary text-sm text-center mt-2">
-              Se ha enviado al correo electrónico ingresado un enlace para reiniciar la contraseña.
-              Si no lo ves, revisa el buzón de Spam antes de reenviar el enlace.
+            <p className="text-taski-secondary text-sm text-center mt-2 whitespace-pre-line">
+              {text.forgotSuccess}
             </p>
             <p className="text-taski-warning text-xs text-center mt-2 underline hover:cursor-pointer hover:scale-105 transition-all 
           duration-300 ">
-              Reenviar enlace.
+              {text.resendLink}
             </p>
           </div>
         )}

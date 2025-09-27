@@ -1,52 +1,52 @@
 import REACT from "react";
 
-export const validatePassword = (password) => {
+export const validatePassword = (password, text) => {
   const errors = [];
   if (password.length < 8) {
-    errors.push("• Debe tener al menos 8 caracteres.");
+    errors.push(text.min8characters);
   }
   if (!/[A-Z]/.test(password)) {
-    errors.push("• Debe tener al menos una letra mayúscula.");
+    errors.push(text.minOneUpperCase);
   }
   if (!/[a-z]/.test(password)) {
-    errors.push("• Debe tener al menos una letra minúscula.");
+    errors.push(text.minOneLowerCase);
   }
   if (!/[0-9]/.test(password)) {
-    errors.push("• Debe tener al menos un número.");
+    errors.push(text.minOneNumber);
   }
   return errors;
 };
 
-export const validateConfirmPassword = (password, confirmPassword) => {
+export const validateConfirmPassword = (password, confirmPassword, text) => {
   const errors = [];
   if (password !== confirmPassword){
-    errors.push("Las contraseñas ingresadas no coinciden.");
+    errors.push(text.passwordNotMatch);
   }
   return errors;
 };
 
-export const validateLoginPassword = (password)  => {
+export const validateLoginPassword = (password, text)  => {
   const errors = [];
   if (password.length < 8) {
-    errors.push("Debe tener al menos 8 caracteres.");
+    errors.push(text.min8characters);
   }
   return errors;
 };
 
-export const validateEmail = (email) => {
+export const validateEmail = (email, text) => {
     const errors = [];
     if (!email.trim()) {
-      errors.push("El correo es requerido.");
+      errors.push(text.emailRequired);
     } else if (!/\S+@\S+\.\S+/.test(email)) {
-      errors.push("Formato de correo inválido.");
+      errors.push(text.invalidEmail);
     }
     return errors;
 };
 
-export const validateUsername = (username) => {
+export const validateUsername = (username, text) => {
   const errors = [];
   if (username.length > 50 || username.length < 3){
-    errors.push("Username debe ser de entre 3 y 50 caracteres.")
+    errors.push(text.username3to50)
   }
   return errors;
 }

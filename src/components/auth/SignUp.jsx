@@ -10,6 +10,7 @@ import {
 } from "../../utils/inputValidators";
 import { useLogin } from "../../hooks/auth/useLogin";
 import { useState, useEffect } from "react";
+import { useLanguage } from "../../hooks/common/useLanguage";
 
 function SignUp() {
   const [form, setForm] = useState({
@@ -23,6 +24,7 @@ function SignUp() {
   const [success, setSuccess] = useState(false);
 
   const { user, errors: loginErrors, loading, login } = useLogin();
+  const { text } = useLanguage();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -31,17 +33,17 @@ function SignUp() {
 
   const validate = (form) => {
     const newErrors = {};
-    const emailErrors = validateEmail(form.email);
+    const emailErrors = validateEmail(form.email, text);
     if (emailErrors.length > 0) newErrors.email = emailErrors.join(", ");
-    const passwordErrors = validatePassword(form.password);
+    const passwordErrors = validatePassword(form.password, text);
     if (passwordErrors.length > 0)
       newErrors.password = passwordErrors.join(" \n ");
-    const userNameErrors = validateUsername(form.username);
+    const userNameErrors = validateUsername(form.username, text);
     if (userNameErrors.length > 0)
       newErrors.username = userNameErrors.join(", ");
     const confirmPassErrors = validateConfirmPassword(
       form.password,
-      form.confirm
+      form.confirm, text
     );
     if (confirmPassErrors.length > 0)
       newErrors.confirm = confirmPassErrors.join(", ");
@@ -50,7 +52,7 @@ function SignUp() {
 
   useEffect(() => {
     setFormErrors(validate(form));
-  }, [form]);
+  }, [form, text]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -74,50 +76,50 @@ function SignUp() {
     <form onSubmit={handleSubmit} className="w-full flex justify-center px-4">
       <div className="bg-taski-card rounded-2xl p-6 flex flex-col gap-4 w-full sm:max-w-md">
         <h1 className="text-taski-text-title font-bold text-xl sm:text-2xl text-center">
-          Create your account!
+          {text.createAccount}
         </h1>
 
         <div className="flex flex-col gap-3">
           <Input
-            label="Username"
+            label={text.userName}
             name="username"
             value={form.username}
             onChange={handleChange}
-            placeholder="Jhon Doe"
+            placeholder={text.userNamePlaceholder}
             error={submitted ? formErrors.username : ""}
             icon={IdIcon}
             disabled={success}
           />
           <Input
-            label="Email"
+            label={text.email}
             name="email"
             type="email"
             value={form.email}
             onChange={handleChange}
-            placeholder="email@example.com"
+            placeholder={text.emailPlaceholder}
             error={submitted ? formErrors.email : ""}
             icon={EmailIcon}
             disabled={success}
           />
           <Input
-            label="Password"
+            label={text.password}
             name="password"
             type="password"
             variant="change"
             value={form.password}
             onChange={handleChange}
-            placeholder="********"
+            placeholder={text.passwordPlaceholder}
             error={formErrors.password}
             icon={PassIcon}
             disabled={success}
           />
           <Input
-            label="Confirm Password"
+            label={text.confirmPassword}
             name="confirm"
             type="password"
             value={form.confirm}
             onChange={handleChange}
-            placeholder="********"
+            placeholder={text.passwordPlaceholder}
             error={form.confirm.length > 0 ? formErrors.confirm : ''}
             icon={PassIcon}
             disabled={success}
@@ -125,7 +127,7 @@ function SignUp() {
         </div>
 
         <Button
-          label={loading ? "Registering..." : "Register"}
+          label={loading ? text.registering : text.register}
           type="submit"
           icon={LoginIcon}
           disabled={
@@ -138,14 +140,12 @@ function SignUp() {
 
         {success && (
           <div>
-            <p className="text-taski-secondary text-sm text-center mt-2">
-              Se ha enviado al correo electrónico ingresado un enlace de
-              verificación para terminar el registro.
-              Si no lo ves, revisa el buzón de Spam antes de reenviar el enlace.
+            <p className="text-taski-secondary text-sm text-center mt-2 whitespace-pre-line">
+              {text.signUpSuccess}
             </p>
             <p className="text-taski-warning text-xs text-center mt-2 underline hover:cursor-pointer hover:scale-105 transition-all 
-          duration-300 ">
-              Reenviar enlace.
+          duration-300">
+              {text.resendLink}
             </p>
           </div>
         )}
