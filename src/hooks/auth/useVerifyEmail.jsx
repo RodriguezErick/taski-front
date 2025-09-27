@@ -1,19 +1,19 @@
 import { useState } from "react";
-import { login as loginApi } from "../../api/auth";
+import { verifyEmail as verifyEmailApi } from "../../api/auth";
 
-export const useLogin = () => {
-  const [user, setUser] = useState(null);
+export const useVerifyEmail = () => {
+  const [status, setStatus] = useState("checking");
   const [errors, setErrors] = useState({});
-  const [loading, setLoading] = useState(false);
 
-  const login = async (form) => {
+  const verify = async (token) => {
     try {
-      setLoading(true);
-      const data = await loginApi(form);
-      setUser(data.user);
+      setStatus("checking"); 
+      const data = await verifyEmailApi(token);
+      setStatus("success"); 
       setErrors({});
       return data;
     } catch (err) {
+      setStatus("error");
       const normalized = err?.message
         ? { general: err.message }
         : typeof err === "object" && err !== null
@@ -22,10 +22,8 @@ export const useLogin = () => {
 
       setErrors(normalized);
       throw normalized;
-    } finally {
-      setLoading(false);
-    }
+    } 
   };
 
-  return { user, errors, loading, login };
+  return { status, errors, verify };
 };

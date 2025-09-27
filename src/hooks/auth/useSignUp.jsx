@@ -1,16 +1,14 @@
 import { useState } from "react";
-import { login as loginApi } from "../../api/auth";
+import { signUp as signUpApi } from "../../api/auth";
 
-export const useLogin = () => {
-  const [user, setUser] = useState(null);
+export const useSignUp = () => {
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
 
-  const login = async (form) => {
+  const signUp = async (form) => {
     try {
       setLoading(true);
-      const data = await loginApi(form);
-      setUser(data.user);
+      const data = await signUpApi(form);
       setErrors({});
       return data;
     } catch (err) {
@@ -27,5 +25,5 @@ export const useLogin = () => {
     }
   };
 
-  return { user, errors, loading, login };
+  return { errors, loading, signUp };
 };

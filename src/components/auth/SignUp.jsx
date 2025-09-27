@@ -4,13 +4,13 @@ import { EmailIcon, IdIcon, LoginIcon, PassIcon } from "../../assets/icons";
 import {
   validateConfirmPassword,
   validateEmail,
-  validateLoginPassword,
   validatePassword,
   validateUsername,
 } from "../../utils/inputValidators";
-import { useLogin } from "../../hooks/auth/useLogin";
 import { useState, useEffect } from "react";
 import { useLanguage } from "../../hooks/common/useLanguage";
+import { useSignUp } from "../../hooks/auth/useSignUp";
+import { useResendVerification } from "../../hooks/auth/useResendVerification";
 
 function SignUp() {
   const [form, setForm] = useState({
@@ -23,7 +23,14 @@ function SignUp() {
   const [submitted, setSubmitted] = useState(false);
   const [success, setSuccess] = useState(false);
 
-  const { user, errors: loginErrors, loading, login } = useLogin();
+  const {
+    errors: resendErrors,
+    loading: loadingResend,
+    sent,
+    resendVerification,
+  } = useResendVerification();
+
+  const { errors, loading, signUp } = useSignUp();
   const { text } = useLanguage();
 
   const handleChange = (e) => {
@@ -43,7 +50,8 @@ function SignUp() {
       newErrors.username = userNameErrors.join(", ");
     const confirmPassErrors = validateConfirmPassword(
       form.password,
-      form.confirm, text
+      form.confirm,
+      text
     );
     if (confirmPassErrors.length > 0)
       newErrors.confirm = confirmPassErrors.join(", ");
@@ -57,15 +65,33 @@ function SignUp() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSubmitted(true);
-    
+
     if (Object.keys(formErrors).length === 0) {
       try {
-        //const data = await login(form);
+        const data = await signUp({
+          username: form.username,
+          email: form.email,
+          password: form.password,
+        });
         console.log("Envia request: ");
         setSuccess(true);
       } catch (err) {
         console.error("no envia request: ");
         setSuccess(false);
+      }
+    }
+  };
+  const handleResend = async (e) => {
+    e.preventDefault();
+
+    if (Object.keys(formErrors).length === 0) {
+      try {
+        const data = await resendVerification({
+          email: form.email,
+        });
+        console.log("Envia request: ");
+      } catch (err) {
+        console.error("no envia request: ");
       }
     }
   };
@@ -120,7 +146,7 @@ function SignUp() {
             value={form.confirm}
             onChange={handleChange}
             placeholder={text.passwordPlaceholder}
-            error={form.confirm.length > 0 ? formErrors.confirm : ''}
+            error={form.confirm.length > 0 ? formErrors.confirm : ""}
             icon={PassIcon}
             disabled={success}
           />
@@ -143,16 +169,27 @@ function SignUp() {
             <p className="text-taski-secondary text-sm text-center mt-2 whitespace-pre-line">
               {text.signUpSuccess}
             </p>
-            <p className="text-taski-warning text-xs text-center mt-2 underline hover:cursor-pointer hover:scale-105 transition-all 
-          duration-300">
+            <p
+              className={`text-taski-warning text-xs text-center mt-2 underline transition-all duration-300 ${
+                loadingResend || sent
+                  ? "opacity-50 cursor-not-allowed"
+                  : "hover:cursor-pointer hover:scale-105"
+              }`}
+              onClick={!loadingResend && !sent ? handleResend : undefined}
+            >
               {text.resendLink}
             </p>
           </div>
         )}
 
-        {loginErrors && (
+        {errors && (
           <p className="text-taski-alert text-sm text-center mt-2">
-            {loginErrors.general}
+            {errors.general}
+          </p>
+        )}
+        {resendErrors && (
+          <p className="text-taski-alert text-sm text-center mt-2">
+            {resendErrors.general}
           </p>
         )}
       </div>

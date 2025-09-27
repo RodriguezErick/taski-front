@@ -1,12 +1,10 @@
 import Input from "../common/Input";
 import Button from "../common/Button";
 import { EmailIcon, IdIcon, LoginIcon, PassIcon } from "../../assets/icons";
-import {
-  validateEmail
-} from "../../utils/inputValidators";
-import { useLogin } from "../../hooks/auth/useLogin";
+import { validateEmail } from "../../utils/inputValidators";
 import { useState, useEffect } from "react";
 import { useLanguage } from "../../hooks/common/useLanguage";
+import { useForgotPassword } from "../../hooks/auth/useForgotPassword";
 
 function ForgotPassword() {
   const [form, setForm] = useState({
@@ -15,8 +13,9 @@ function ForgotPassword() {
   const [formErrors, setFormErrors] = useState({});
   const [submitted, setSubmitted] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [sent, setSent] = useState(false);
 
-  const { user, errors: loginErrors, loading, login } = useLogin();
+  const { errors, loading, forgot } = useForgotPassword();
   const { text } = useLanguage();
 
   const handleChange = (e) => {
@@ -38,17 +37,27 @@ function ForgotPassword() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSubmitted(true);
-    
+
     if (Object.keys(formErrors).length === 0) {
-      try {
-        //const data = await login(form);
-        console.log("Envia request: ");
-        setSuccess(true);
-      } catch (err) {
-        console.error("no envia request: ");
-        setSuccess(false);
-      }
+      sendForgot();
     }
+  };
+
+  const sendForgot = async () => {
+    try {
+      const data = await forgot(form);
+      console.log("Envia request");
+      setSuccess(true);
+    } catch (err) {
+      console.error("No envia request");
+      setSuccess(false);
+    }
+  };
+
+  const handleResend = async () => {
+    if (loading || sent) return;
+    setSent(true);
+    sendForgot();
   };
 
   const hasErrors = Object.keys(formErrors).length > 0;
@@ -78,11 +87,7 @@ function ForgotPassword() {
           label={loading ? text.submitting : text.submit}
           type="submit"
           icon={LoginIcon}
-          disabled={
-            hasErrors ||
-            loading ||
-            success 
-          }
+          disabled={hasErrors || loading || success}
         />
 
         {success && (
@@ -90,16 +95,22 @@ function ForgotPassword() {
             <p className="text-taski-secondary text-sm text-center mt-2 whitespace-pre-line">
               {text.forgotSuccess}
             </p>
-            <p className="text-taski-warning text-xs text-center mt-2 underline hover:cursor-pointer hover:scale-105 transition-all 
-          duration-300 ">
+            <p
+              className={`text-taski-warning text-xs text-center mt-2 underline transition-all duration-300 ${
+                loadingResend || sent
+                  ? "opacity-50 cursor-not-allowed"
+                  : "hover:cursor-pointer hover:scale-105"
+              }`}
+              onClick={!loading && !sent ? handleResend : undefined}
+            >
               {text.resendLink}
             </p>
           </div>
         )}
 
-        {loginErrors && (
+        {errors && (
           <p className="text-taski-alert text-sm text-center mt-2">
-            {loginErrors.general}
+            {errors.general}
           </p>
         )}
       </div>

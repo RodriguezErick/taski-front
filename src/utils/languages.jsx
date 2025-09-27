@@ -25,6 +25,9 @@ export const messages = {
         submit: "Submit",
         submitting: "Submitting...",
         forgotSuccess: "A link to reset your password has been sent to the email address provided. \n If you don’t see it, check your Spam folder before resending the link.",
+        newPassword: "New Password",
+        updating: "Updating...",
+        update: "Update",
         // Error messages
         min8characters: "• It must be at least 8 characters long.",
         minOneUpperCase: "• It must contain at least one uppercase letter.",
@@ -60,6 +63,9 @@ export const messages = {
         submit: "Enviar",
         submitting: "Enviando...",
         forgotSuccess: "Se ha enviado al correo electrónico ingresado un enlace para reiniciar la contraseña. \n Si no lo ves, revisa el buzón de Spam antes de reenviar el enlace.",
+        newPassword: "Nueva Contraseña",
+        updating: "Actualizando...",
+        update: "Actualizar",
         // Error messages
         min8characters: "• Debe tener al menos 8 caracteres.",
         minOneUpperCase: "• Debe tener al menos una letra mayúscula.",

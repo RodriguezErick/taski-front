@@ -44,6 +44,7 @@ function Login() {
       try {
         const data = await login(form);
         console.log("Login exitoso: ", data);
+        //TODO - Navigate to dashboard
       } catch (err) {
         console.error("Error en login: ", err);
       }

@@ -1,16 +1,14 @@
 import { useState } from "react";
-import { login as loginApi } from "../../api/auth";
+import { forgotPassword as forgotApi } from "../../api/auth";
 
-export const useLogin = () => {
-  const [user, setUser] = useState(null);
+export const useForgotPassword = () => {
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
 
-  const login = async (form) => {
+  const forgot = async (form) => {
     try {
       setLoading(true);
-      const data = await loginApi(form);
-      setUser(data.user);
+      const data = await forgotApi(form);
       setErrors({});
       return data;
     } catch (err) {
@@ -27,5 +25,5 @@ export const useLogin = () => {
     }
   };
 
-  return { user, errors, loading, login };
+  return { errors, loading, forgot };
 };

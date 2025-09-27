@@ -1,17 +1,17 @@
 import { useState } from "react";
-import { login as loginApi } from "../../api/auth";
+import { resendVerificationEmail as resendApi } from "../../api/auth";
 
-export const useLogin = () => {
-  const [user, setUser] = useState(null);
+export const useResendVerification = () => {
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
+  const [sent, setSent] = useState(false); 
 
-  const login = async (form) => {
+  const resendVerification = async (form) => {
     try {
       setLoading(true);
-      const data = await loginApi(form);
-      setUser(data.user);
+      const data = await resendApi(form);
       setErrors({});
+      setSent(true); 
       return data;
     } catch (err) {
       const normalized = err?.message
@@ -21,11 +21,12 @@ export const useLogin = () => {
         : { general: "Unknown error" };
 
       setErrors(normalized);
+      setSent(false); 
       throw normalized;
     } finally {
       setLoading(false);
     }
   };
 
-  return { user, errors, loading, login };
+  return { errors, loading, sent, resendVerification };
 };

@@ -5,6 +5,7 @@ import { useState } from "react";
 import { CloseIcon } from "../../assets/icons";
 import ForgotPassword from "../../components/auth/ForgotPassword";
 import { useLanguage } from "../../hooks/common/useLanguage";
+import { loginBackgroundStyle } from "../../utils/constants";
 
 function LoginPage() {
   const [showModalSignUp, setShowModalSignUp] = useState(false);
@@ -14,20 +15,7 @@ function LoginPage() {
     <div className="relative min-h-screen w-full overflow-hidden">
       <div
         className="hidden md:block absolute inset-0"
-        style={{
-          backgroundImage: `url(${loginImage})`,
-          backgroundPosition: "right",
-          backgroundSize: "auto",
-          backgroundRepeat: "no-repeat",
-          WebkitMaskImage:
-            "radial-gradient(circle at right center, rgba(0,0,0,1) 0%, rgba(0,0,0,0.7) 40%, rgba(0,0,0,0) 50%)",
-          WebkitMaskRepeat: "no-repeat",
-          WebkitMaskSize: "cover",
-          maskImage:
-            "radial-gradient(circle at right center, rgba(0,0,0,1) 0%, rgba(0,0,0,0.7) 40%, rgba(0,0,0,0) 50%)",
-          maskRepeat: "no-repeat",
-          maskSize: "cover",
-        }}
+        style={loginBackgroundStyle}
       />
 
       <div className="relative z-10 flex min-h-screen">
