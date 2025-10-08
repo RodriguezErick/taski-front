@@ -19,6 +19,8 @@ export const messages = {
         registering: "Registering...",
         signUpSuccess: "To complete the registration, a verification link has been sent to the email address provided. \n If you don’t see it, check your Spam folder before resending the link.",
         resendLink: "Resend link.",
+        verifyingEmail: "Verifying email...",
+        verifySuccess: "Your email has been successfully verified, now you can Login. \n Navigating back to Login Page...",
         // Forgot Password
         forgotPassword: "Forgot my Password",
         resetPassword: "Reset your Password!",
@@ -28,6 +30,7 @@ export const messages = {
         newPassword: "New Password",
         updating: "Updating...",
         update: "Update",
+        passwordSuccess: "Password reseted successfully, now you can Login with your new Password.",
         // Error messages
         min8characters: "• It must be at least 8 characters long.",
         minOneUpperCase: "• It must contain at least one uppercase letter.",
@@ -36,7 +39,8 @@ export const messages = {
         passwordNotMatch: "The passwords entered do not match.",
         emailRequired: "Email is required.",
         invalidEmail: "Invalid email format.",
-        username3to50: "Username must be between 3 and 50 characters long."
+        username3to50: "Username must be between 3 and 50 characters long.",
+        noToken: "No valid token was provided."
     },
     es:{
         // Login Page
@@ -57,6 +61,8 @@ export const messages = {
         registering: "Registrando...",
         signUpSuccess: "Para completar el registro, se ha enviado al correo electrónico ingresado un enlace de verificación. \n Si no lo ves, revisa el buzón de Spam antes de reenviar el enlace.",
         resendLink: "Reenviar enlace.",
+        verifyingEmail: "Verificando correo electrónico...",
+        verifySuccess: "Correo verificado correctamente, ahora puedes Iniciar Sesión. \n Regresando a página de Inicio de Sesión...",
         // Forgot Password
         forgotPassword: "Olvidé mi contraseña",
         resetPassword: "¡Crea una nueva Contraseña!",
@@ -66,6 +72,7 @@ export const messages = {
         newPassword: "Nueva Contraseña",
         updating: "Actualizando...",
         update: "Actualizar",
+        passwordSuccess: "Contraseña reestablecida correctamente, ya puedes Iniciar Sesión con tu nueva Contraseña.",
         // Error messages
         min8characters: "• Debe tener al menos 8 caracteres.",
         minOneUpperCase: "• Debe tener al menos una letra mayúscula.",
@@ -74,7 +81,8 @@ export const messages = {
         passwordNotMatch: "Las contraseñas ingresadas no coinciden.",
         emailRequired: "El correo es requerido.",
         invalidEmail: "Formato de correo inválido.",
-        username3to50: "El nombre de usuario debe tener entre 3 y 50 caracteres."
+        username3to50: "El nombre de usuario debe tener entre 3 y 50 caracteres.",
+        noToken: "No se proporcionó un token válido."
     }
 };
 // ,

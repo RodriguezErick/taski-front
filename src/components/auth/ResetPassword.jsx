@@ -1,12 +1,16 @@
 import { useState, useEffect } from "react";
 import { Loader, Success, Error } from "../common/Animations";
 import { useLanguage } from "../../hooks/common/useLanguage";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { useResetPassword } from "../../hooks/auth/useResetPassword";
 import {
   validateConfirmPassword,
   validatePassword
 } from "../../utils/inputValidators";
+import Input from "../common/Input";
+import { PassIcon, LoginIcon } from "../../assets/icons";
+import Button from "../common/Button";
+import { Navigate } from "react-router-dom";
 
 function ResetPassword() {
   const [form, setForm] = useState({
@@ -19,6 +23,7 @@ function ResetPassword() {
   const { text } = useLanguage();
   const [searchParams] = useSearchParams();
   const tokenFromUrl = searchParams.get("token");
+  const navigate = useNavigate();
 
   const { errors, loading, reset } = useResetPassword();
 
@@ -33,7 +38,7 @@ function ResetPassword() {
 
     if (Object.keys(formErrors).length === 0) {
       try {
-        const data = await reset({
+        await reset({
             token: tokenFromUrl,
             newPassword: form.password
         });
@@ -65,6 +70,13 @@ function ResetPassword() {
     setFormErrors(validate(form));
   }, [form, text]);
 
+  useEffect(() => {
+    if (success) {
+      const timer = setTimeout(() => navigate("/"), 8000);
+      return () => clearTimeout(timer);
+    }
+  }, [success, navigate]);
+
   const hasErrors = Object.keys(formErrors).length > 0;
 
   return (
@@ -73,10 +85,11 @@ function ResetPassword() {
         <h1 className="text-taski-text-title font-bold p-4">{text.welcome}</h1>
         {!tokenFromUrl ? (
           <>
-            <p>❌ No se proporcionó un token válido.</p>
+            <p>{text.noToken}</p>
             <Error />
           </>
-        ) : (
+
+        ) : !success ? (
           <div className="w-full max-w-3/4 mx-auto">
             <Input
               label={text.password}
@@ -86,10 +99,11 @@ function ResetPassword() {
               value={form.password}
               onChange={handleChange}
               placeholder={text.passwordPlaceholder}
-              error={formErrors.password}
+              error={submitted ? formErrors.password : ""}
               icon={PassIcon}
-              disabled={success}
+              disabled={loading}
             />
+
             <Input
               label={text.confirmPassword}
               name="confirm"
@@ -97,27 +111,28 @@ function ResetPassword() {
               value={form.confirm}
               onChange={handleChange}
               placeholder={text.passwordPlaceholder}
-              error={form.confirm.length > 0 ? formErrors.confirm : ""}
+              error={submitted && form.confirm.length > 0 ? formErrors.confirm : ""}
               icon={PassIcon}
-              disabled={success}
+              disabled={loading}
             />
 
             <Button
               label={loading ? text.updating : text.update}
               type="submit"
               icon={LoginIcon}
-              disabled={
-                hasErrors ||
-                loading ||
-                success ||
-                (hasErrors && form.confirm.length > 0)
-              }
+              disabled={hasErrors || loading}
             />
 
-            {errors && (
+            {submitted && errors && (
               <p className="text-taski-alert text-sm mt-2">{errors.general}</p>
             )}
           </div>
+
+        ) : (
+          <>
+            <p>{text.passwordSuccess}</p>
+            <Success />
+          </>
         )}
       </div>
     </form>

@@ -97,7 +97,7 @@ function ForgotPassword() {
             </p>
             <p
               className={`text-taski-warning text-xs text-center mt-2 underline transition-all duration-300 ${
-                loadingResend || sent
+                loading || sent
                   ? "opacity-50 cursor-not-allowed"
                   : "hover:cursor-pointer hover:scale-105"
               }`}
